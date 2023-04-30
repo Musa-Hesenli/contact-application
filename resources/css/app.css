@@ -1,0 +1,16 @@
+@import 'https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100;0,300;0,400;0,500;1,100&display=swap';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+    font-family: 'Work Sans', sans-serif;
+}
+
+input, select {
+    outline: none;
+}
+
+input {
+    border-width: 2px;
+}
