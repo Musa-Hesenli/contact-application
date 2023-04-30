@@ -6,6 +6,7 @@ use App\Http\Requests\Contacts\CreateContactRequest;
 use App\Models\Contact;
 use App\Services\ImageService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class ContactRepository implements ContactRepositoryInterface
 {
@@ -45,6 +46,12 @@ class ContactRepository implements ContactRepositoryInterface
 
     public function update(int $id, CreateContactRequest $request )
     {
+        Log::debug( $id );
+        $contactExists = Contact::where( 'id', '!=', $id )->where( 'user_id', auth()->user()->getAuthIdentifier() )->where( 'number', $request->post( 'phone' ) )->first();
+        if ( $contactExists )
+        {
+            throw new \Exception( 'There is another contact with the number' );
+        }
 
         $contact = $this->find( $id );
         if ( $request->hasFile( 'file' ) )

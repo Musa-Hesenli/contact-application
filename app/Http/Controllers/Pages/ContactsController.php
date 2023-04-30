@@ -50,9 +50,18 @@ class ContactsController extends Controller
 
     public function edit(string $id)
     {
-        $contact    = $this->contactRepository->find( $id );
-        $categories = $this->getCategories();
-        return view( 'pages.edit', compact( 'contact', 'categories' ) );
+        try {
+            $contact    = $this->contactRepository->find( $id );
+            $categories = $this->getCategories();
+            return view( 'pages.edit', compact( 'contact', 'categories' ) );
+        } catch ( \Exception $exception )
+        {
+            return redirect()->back()
+                ->withInput()
+                ->withErrors( [
+                    'general_error' => $exception->getMessage()
+                ] );
+        }
     }
 
     public function update( CreateContactRequest $request, string $id )
